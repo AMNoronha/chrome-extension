@@ -2,29 +2,28 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="assets/css/popup.css">
+  <!-- <link rel="stylesheet" href="assets/css/popup.css"> -->
+  <script src="../scripts/popup.js"></script>
 </head>
 
 <body>
-  <div id="notify-wrapper">
-    <div id="notify-header">
-      <h1>Notify!</h1>
+  <div id="wrapper">
+    <div id="header">
+      <h1>UNIVERLAY</h1>
     </div>
-    <div id="notify-containers">
-      <div class="notify-form">
-        <label for="text">Notification</label>
-        <textarea name="text" id="notify-text" placeholder="Let's notify!"></textarea>
-      </div>
-      <div class=notify-buttons>
-        <p>Total: <span id="notify-count"></span></p>
-
-        <button class="button" id="notify-reset">
-          Reset
+    <div id="containers">
+      <form class="form">
+        <label for="text">EMAIL</label>
+        <input name="text" id="email" placeholder="test@test.com">
+        <label for="text">PASSWORD</label>
+        <input name="text" id="password" placeholder="******">
+        <input type="submit" class="button primary" id="submit-button">
+      </form>
+      <!-- <div class=buttons>
+        <button class="button primary" id="submit-button">
+          Login!
         </button>
-        <button class="button primary" id="notify-button">
-          Notify!
-        </button>
-      </div>
+      </div> -->
     </div>
   </div>
 </body>
