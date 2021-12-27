@@ -4,9 +4,8 @@ chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
     if (request.message === "start") {
       start()
-      let email = select('#email');
       console.log("this worked");
-      console.log(email.input);
+      console.log(request.email);
     }
   }
 );
