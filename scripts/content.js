@@ -1,6 +1,17 @@
 console.log("Please work");
 
-window.onload = function () {
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    if (request.message === "start") {
+      start()
+      console.log("this worked");
+      console.log(request.email);
+    }
+  }
+);
+
+function start() {
+  console.log("hello from start")
   callRails();
 }
 

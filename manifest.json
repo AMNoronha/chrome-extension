@@ -1,5 +1,5 @@
 {
-  "name": "Notify!",
+  "name": "UNIVERLAY",
   "description": "A Google Chrome extension!",
   "version": "1.0",
   "manifest_version": 3,
@@ -23,5 +23,8 @@
         "scripts/content.js"
       ]
     }
+  ],
+  "permissions": [
+      "tabs"
   ]
 }
