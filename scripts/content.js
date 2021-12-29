@@ -53,8 +53,11 @@ function callRails() {
 
 function dataProcess(data) {
   console.log("in data process function", data[0].pop_up_text)
-  // const docUrl = document.url
-  data.forEach( element => addElement(element.pop_up_text))
+  console.log(data);
+  console.log(location.href);
+  const filteredData = data.filter(element => element.url === location.href);
+  console.log(filteredData)
+  filteredData.forEach( element => addElement(element.pop_up_text));
 }
 
 function addElement(text) {
