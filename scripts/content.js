@@ -5,11 +5,11 @@ chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
     if (request.message === "start") {
       let userDetails = {
-        "email": request.email,
-        "password": request.password
+        "userid": request.userid
     };
       console.log("Submit button worked, start function initiated");
       start(userDetails);
+      fetchProgress();
     };
   }
 );
@@ -75,4 +75,18 @@ function addElement(text) {
   // const currentDiv = document.querySelector(".application-main");
   const currentDiv = document.querySelector("p");
   document.body.insertBefore(newDiv, currentDiv[0]);
+}
+
+function fetchProgress() {
+  console.log("Fetching progress")
+  const url = new URL("http://localhost:3000/lessons/1/lesson_progresses")
+  fetch(url, {
+    method: 'GET',
+    // credentials: 'include',
+    headers: { 'Accept': 'application/json' }
+    // ,mode: "no-cors"
+  }
+  )
+    .then(response => response.json())
+    .then(data => console.log(data), console.log("fetch progress worked"));
 }

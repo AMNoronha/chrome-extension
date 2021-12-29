@@ -6,8 +6,7 @@ function popup() {
     var activeTab = tabs[0];
     chrome.tabs.sendMessage(activeTab.id, {
       "message": "start",
-      "email": document.getElementById("email").value,
-      "password": document.getElementById("password").value
+      "userid": document.getElementById("userid").value
     });
   });
 }
