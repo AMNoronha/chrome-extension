@@ -1,4 +1,42 @@
+// import introJs from "scripts/intro.min.js";
+// import { lessonOptions } from 'scripts/lesson.js';
+
 console.log("Chrome Extension Univerlay Connected");
+
+let s = document.createElement('script');
+// console.log(s);
+s.src = chrome.runtime.getURL('scripts/intro.min.js');
+// console.log(s.src);
+s.onload = function(){
+  this.remove();
+};
+(document.head || document.documentElement).appendChild(s);
+
+const lessonOptions1 = {
+  steps: [{
+    title: "WELCOME TO UNIVERLAY",
+    intro: "Lesson 1 - How to Create a GitHub Repo",
+  }, {
+    element: document.querySelectorAll('.octicon.octicon-plus')[0],
+    title: "Step 1",
+    intro: "Click here and choose New repository"
+  }]
+};
+
+const lessonOptions2 = {
+  steps: [{
+    element: document.querySelector('.js-template-repository-select'),
+    title: "Step 2",
+    intro: "Choose a template, or start from scratch",
+  }, {
+    element: document.querySelector('#repository_name'),
+    title: "Step 3",
+    intro: "Enter a new for your respository"
+  }]
+};
+
+console.log(lessonOptions1);
+console.log(lessonOptions2);
 
 // Listener for popup submit button (runs chrome extension on page)
 chrome.runtime.onMessage.addListener(

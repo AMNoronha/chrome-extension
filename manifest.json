@@ -21,10 +21,24 @@
       ],
       "js": [
         "scripts/content.js"
+      ],
+      "css": [
+        "style/introjs.css"
       ]
     }
   ],
   "permissions": [
       "tabs"
+    ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "scripts/intro.min.js",
+        "style/introjs.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
   ]
 }
