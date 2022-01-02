@@ -12,6 +12,8 @@ s.onload = function(){
 };
 (document.head || document.documentElement).appendChild(s);
 
+//For now run these in console to define the lesson steps; can't seem to get this defined by content.js,
+//disappears on each page reload
 const lessonOptions1 = {
   steps: [{
     title: "WELCOME TO UNIVERLAY",
@@ -35,8 +37,12 @@ const lessonOptions2 = {
   }]
 };
 
+//checking to see if lesson plans update
 console.log(lessonOptions1);
 console.log(lessonOptions2);
+
+//Can't run introJs().setOptions(lesson...).start();
+//Do this manuall in console
 
 // Listener for popup submit button (runs chrome extension on page)
 chrome.runtime.onMessage.addListener(
