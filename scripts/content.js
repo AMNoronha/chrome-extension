@@ -1,17 +1,35 @@
 console.log("Chrome Extension Univerlay Connected");
 
-// Listener for popup submit button (runs chrome extension on page)
-chrome.runtime.onMessage.addListener(
-  function (request, sender, sendResponse) {
-    if (request.message === "start") {
-      let userDetails = {
-        "userid": request.userid
-    };
-      console.log("Submit button worked, start function initiated");
-      start(userDetails);
-    };
-  }
-);
+if (localStorage.getItem('userid')) {
+  console.log("yes local storage userid")
+  yesLocalUser();
+} else {
+  console.log("no local storage userid")
+  noLocalUser()
+}
+
+function yesLocalUser() {
+  console.log("in the yesLocalUser function")
+  let userDetails = {
+    "userid": localStorage.getItem('userid')
+  };
+  start(userDetails)
+}
+
+function noLocalUser() {
+  chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+      if (request.message === "start") {
+        let userDetails = {
+          "userid": request.userid
+      };
+        console.log("Submit button worked, start function initiated");
+        localStorage.setItem('userid', userDetails.userid);
+        start(userDetails);
+      };
+    }
+  );
+}
 
 function start(userDetails) {
   console.log("Start function working, submitted user details:")
