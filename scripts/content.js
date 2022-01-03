@@ -89,7 +89,7 @@ function addElement() {
 function callRails(userDetails) {
   console.log("Call Rails started, fetching data")
   console.log(localStorage.getItem('lessonid'))
-  const url = new URL("http://localhost:3000/lessons/1/lesson_steps")
+  const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem('lessonid')}/lesson_steps`)
   fetch(url, {
     method: 'GET',
     // credentials: 'include',
@@ -129,7 +129,7 @@ function dataProcessURL(data, userDetails) {
 
 function fetchProgress(filteredData, userDetails) {
   console.log("Fetching progress")
-  const url = new URL("http://localhost:3000/lessons/1/lesson_progresses")
+  const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem('lessonid')}//lesson_progresses`)
   fetch(url, {
     method: 'GET',
     // credentials: 'include',
