@@ -3,6 +3,26 @@
 
 console.log("Chrome Extension Univerlay Connected");
 
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    if (request.message === "clear") {
+      localStorage.clear();
+      location.reload();
+    };
+  }
+);
+
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    if (request.message === "lessonchange") {
+      let lessonDetails = {
+        "lessonid": request.lessonid
+      };
+      localStorage.setItem('lessonid', lessonDetails.lessonid);
+    };
+  }
+);
+
 let s = document.createElement('script');
 // console.log(s);
 s.src = chrome.runtime.getURL('scripts/intro.min.js');
@@ -68,6 +88,7 @@ function addElement() {
 
 function callRails(userDetails) {
   console.log("Call Rails started, fetching data")
+  console.log(localStorage.getItem('lessonid'))
   const url = new URL("http://localhost:3000/lessons/1/lesson_steps")
   fetch(url, {
     method: 'GET',
