@@ -91,7 +91,9 @@ function callRails(userDetails) {
   console.log("Call Rails started, fetching data")
   console.log("localstorage lessonid:", localStorage.getItem('lessonid'))
   if (localStorage.getItem('lessonid') !== null) {
-    const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem('lessonid')}/lesson_steps`)
+    // const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
+    const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
+    console.log("url", url)
     fetch(url, {
       method: 'GET',
       // credentials: 'include',
@@ -114,7 +116,9 @@ function dataProcessURL(data, userDetails) {
 
 function fetchProgress(filteredData, userDetails) {
   console.log("Fetching progress")
-  const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem('lessonid')}//lesson_progresses`)
+  // const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}//lesson_progresses`)
+  const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  console.log("url", url);
   fetch(url, {
     method: 'GET',
     // credentials: 'include',
