@@ -19,6 +19,7 @@ chrome.runtime.onMessage.addListener(
         "lessonid": request.lessonid
       };
       localStorage.setItem('lessonid', lessonDetails.lessonid);
+      location.reload();
     };
   }
 );
@@ -88,17 +89,19 @@ function addElement() {
 
 function callRails(userDetails) {
   console.log("Call Rails started, fetching data")
-  console.log(localStorage.getItem('lessonid'))
-  const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem('lessonid')}/lesson_steps`)
-  fetch(url, {
-    method: 'GET',
-    // credentials: 'include',
-    headers: { 'Accept': 'application/json'}
-    // ,mode: "no-cors"
+  console.log("localstorage lessonid:", localStorage.getItem('lessonid'))
+  if (localStorage.getItem('lessonid') !== null) {
+    const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem('lessonid')}/lesson_steps`)
+    fetch(url, {
+      method: 'GET',
+      // credentials: 'include',
+      headers: { 'Accept': 'application/json'}
+      // ,mode: "no-cors"
+    }
+      )
+      .then(response => response.json())
+      .then(data => dataProcessURL(data, userDetails), console.log("fetch worked"));
   }
-    )
-    .then(response => response.json())
-    .then(data => dataProcessURL(data, userDetails), console.log("fetch worked"));
 };
 
 function dataProcessURL(data, userDetails) {
@@ -107,25 +110,7 @@ function dataProcessURL(data, userDetails) {
   console.log(location.href);
   const filteredData = data.filter(element => element.url === location.href);
   fetchProgress(filteredData, userDetails);
-  // filteredData.forEach( element => addElement(element.pop_up_text)); testing fetchProgress
 };
-
-// function addElement(text) { testing fetchProgress
-//   // create a new div element
-//   console.log("in js addElement")
-//   const newDiv = document.createElement("div");
-//   newDiv.setAttribute("style", "background-color: rgba(0,0,0,0.5);position: fixed;");
-//   // and give it some content
-//   const newContent = document.createTextNode(text)
-
-//   // add the text node to the newly created div
-//   newDiv.appendChild(newContent);
-
-//   // add the newly created element and its content into the DOM
-//   // const currentDiv = document.querySelector(".application-main");
-//   const currentDiv = document.querySelector("p");
-//   document.body.insertBefore(newDiv, currentDiv[0]);
-// }
 
 function fetchProgress(filteredData, userDetails) {
   console.log("Fetching progress")
@@ -148,16 +133,20 @@ function dataProcessUserID(progress, filteredData, userDetails) {
   const currentStep = progress.find(element => element.user_id == userDetails.userid);
   const finalData = filteredData.filter(element => element.sequence >= currentStep.current_step);
   console.log("finalData:", finalData)
-  const lessonOptions1 = {
+  appendPopUpToDOM(finalData)
+};
+
+function appendPopUpToDOM(finalData) {
+  const lessonOptions = {
     steps: []
   };
   finalData.forEach(step => {
-    lessonOptions1.steps.push({
+    lessonOptions.steps.push({
       element: document.querySelector(step.DOM_Id),
       title: step.title,
       intro: step.pop_up_text
     })
   })
-  console.log(lessonOptions1)
-  introJs().setOptions(lessonOptions1).start()
-};
+  console.log(lessonOptions)
+  introJs().setOptions(lessonOptions).start()
+}
