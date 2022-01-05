@@ -165,7 +165,8 @@ function startObjectsIntro(inputLessons) {
   intro.setOptions(inputLessons);
   intro.start().onchange(function () {
     lastStep = intro._currentStep;
-    alert("This is step" + lastStep);
+    // alert("This is step" + lastStep);
+    console.log(lastStep);
   });
 }
 
