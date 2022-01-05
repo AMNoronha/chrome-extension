@@ -131,6 +131,23 @@ function fetchProgress(filteredData, userDetails) {
     .then(data => dataProcessUserID(data, filteredData, userDetails), console.log("fetch progress worked"));
 };
 
+// Function to save most updated lesson step into databse
+function saveProgress(filteredData, userDetails) {
+  console.log("Saving progress");
+  const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`);
+  console.group("url", url);
+  fetch(url, {
+    method: 'PATCH',
+    headers: {'Accept': 'application/json' }
+  }
+  )
+    .then(response => response.json())
+    .then(data => dataProcessUserID(data, filteredData, userDetails),
+    console.log("Saved progress worked")
+  );
+};
+
+
 function dataProcessUserID(progress, filteredData, userDetails) {
   console.log("userid:", userDetails);
   console.log("progress:", progress);
@@ -141,6 +158,18 @@ function dataProcessUserID(progress, filteredData, userDetails) {
   appendPopUpToDOM(finalData)
 };
 
+// Function to call intro.js but also callback to save lesson progress back to lessons_progresses
+function startObjectsIntro(inputLessons) {
+  let intro = introJs();
+  let lastStep = 0;
+  intro.setOptions(inputLessons);
+  intro.start().onchange(function () {
+    lastStep = intro._currentStep;
+    alert("This is step" + lastStep);
+  });
+}
+
+// Function to create lesson steps from database and then run intro.js
 function appendPopUpToDOM(finalData) {
   const lessonOptions = {
     steps: []
@@ -153,6 +182,6 @@ function appendPopUpToDOM(finalData) {
     })
     console.log("completed step creation for:", step.title)
   })
-  console.log(lessonOptions)
-  introJs().setOptions(lessonOptions).start()
+  console.log(lessonOptions);
+  startObjectsIntro(lessonOptions);
 }
