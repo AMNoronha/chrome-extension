@@ -88,7 +88,7 @@ function addElement() {
 
 
 function callRails(userDetails) {
-  console.log("Call Rails started, fetching data")
+  console.log("Call Rails Started, Fetching Data")
   console.log("localstorage lessonid:", localStorage.getItem('lessonid'))
   if (localStorage.getItem('lessonid') !== null) {
     const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
