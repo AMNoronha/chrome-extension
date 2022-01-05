@@ -88,11 +88,11 @@ function addElement() {
 
 
 function callRails(userDetails) {
-  console.log("Call Rails Started, Fetching Data")
+  console.log("Call Rails Started, Fetching Data Now")
   console.log("localstorage lessonid:", localStorage.getItem('lessonid'))
   if (localStorage.getItem('lessonid') !== null) {
-    const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
-    // const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
+    // const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
+    const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
     console.log("url", url)
     fetch(url, {
       method: 'GET',
@@ -110,14 +110,15 @@ function dataProcessURL(data, userDetails) {
   console.log("in data process function", data)
   console.log(data);
   console.log(location.href);
+  // need to use regex
   const filteredData = data.filter(element => location.href.includes(element.url));
   fetchProgress(filteredData, userDetails);
 };
 
 function fetchProgress(filteredData, userDetails) {
   console.log("Fetching progress")
-  const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
-  // const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  // const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
   console.log("url", url);
   fetch(url, {
     method: 'GET',
@@ -150,6 +151,7 @@ function appendPopUpToDOM(finalData) {
       title: step.title,
       intro: step.pop_up_text
     })
+    console.log("completed step creation for:", step.title)
   })
   console.log(lessonOptions)
   introJs().setOptions(lessonOptions).start()
