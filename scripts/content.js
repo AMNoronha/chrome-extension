@@ -111,7 +111,7 @@ function dataProcessURL(data, userDetails) {
   console.log(data);
   console.log(location.href);
   // need to use regex
-  const filteredData = data.filter(element => location.href.includes(element.url));
+  const filteredData = data.filter(element => location.href === element.url);
   fetchProgress(filteredData, userDetails);
 };
 
