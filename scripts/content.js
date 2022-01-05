@@ -141,6 +141,17 @@ function fetchProgress(filteredData, userDetails) {
     .then(data => dataProcessUserID(data, filteredData, userDetails), console.log("fetch progress worked"));
 };
 
+function startObjectsIntro(inputLesson) {
+  let intro = introJs();
+  intro.setOptions(inputLesson);
+  intro.start().onbeforechange(function () {
+
+      if (intro._currentSinputep == "2") {
+          alert("This is step 2")
+      } 
+  });
+}
+
 function dataProcessUserID(progress, filteredData, userDetails) {
   console.log("userid:", userDetails);
   console.log("progress:", progress);
@@ -148,16 +159,17 @@ function dataProcessUserID(progress, filteredData, userDetails) {
   const currentStep = progress.find(element => element.user_id == userDetails.userid);
   const finalData = filteredData.filter(element => element.sequence >= currentStep.current_step);
   console.log("finalData:", finalData)
-  const lessonOptions1 = {
+  const lessonSteps = {
     steps: []
   };
   finalData.forEach(step => {
-    lessonOptions1.steps.push({
+    lessonSteps.steps.push({
       element: document.querySelector(step.DOM_Id),
       title: step.title,
       intro: step.pop_up_text
     })
   })
-  console.log(lessonOptions1)
-  introJs().setOptions(lessonOptions1).start()
+  console.log(lessonSteps);
+  startObjectsIntro(lessonSteps);
 };
+
