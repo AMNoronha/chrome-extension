@@ -19,6 +19,7 @@ chrome.runtime.onMessage.addListener(
         "lessonid": request.lessonid
       };
       localStorage.setItem('lessonid', lessonDetails.lessonid);
+      location.reload();
     };
   }
 );
@@ -87,49 +88,38 @@ function addElement() {
 
 
 function callRails(userDetails) {
-  console.log("Call Rails started, fetching data")
-  console.log(localStorage.getItem('lessonid'))
-  const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem('lessonid')}/lesson_steps`)
-  fetch(url, {
-    method: 'GET',
-    // credentials: 'include',
-    headers: { 'Accept': 'application/json'}
-    // ,mode: "no-cors"
+  console.log("Call Rails Started, Fetching Data Now")
+  console.log("localstorage lessonid:", localStorage.getItem('lessonid'))
+  if (localStorage.getItem('lessonid') !== null) {
+    // const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
+    const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
+    console.log("url", url)
+    fetch(url, {
+      method: 'GET',
+      // credentials: 'include',
+      headers: { 'Accept': 'application/json'}
+      // ,mode: "no-cors"
+    }
+      )
+      .then(response => response.json())
+      .then(data => dataProcessURL(data, userDetails), console.log("fetch worked"));
   }
-    )
-    .then(response => response.json())
-    .then(data => dataProcessURL(data, userDetails), console.log("fetch worked"));
 };
 
 function dataProcessURL(data, userDetails) {
-  console.log("in data process function", data[0].pop_up_text)
+  console.log("in data process function", data)
   console.log(data);
   console.log(location.href);
-  const filteredData = data.filter(element => element.url === location.href);
+  // need to use regex
+  const filteredData = data.filter(element => location.href.includes(element.url));
   fetchProgress(filteredData, userDetails);
-  // filteredData.forEach( element => addElement(element.pop_up_text)); testing fetchProgress
 };
-
-// function addElement(text) { testing fetchProgress
-//   // create a new div element
-//   console.log("in js addElement")
-//   const newDiv = document.createElement("div");
-//   newDiv.setAttribute("style", "background-color: rgba(0,0,0,0.5);position: fixed;");
-//   // and give it some content
-//   const newContent = document.createTextNode(text)
-
-//   // add the text node to the newly created div
-//   newDiv.appendChild(newContent);
-
-//   // add the newly created element and its content into the DOM
-//   // const currentDiv = document.querySelector(".application-main");
-//   const currentDiv = document.querySelector("p");
-//   document.body.insertBefore(newDiv, currentDiv[0]);
-// }
 
 function fetchProgress(filteredData, userDetails) {
   console.log("Fetching progress")
-  const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem('lessonid')}//lesson_progresses`)
+  // const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  console.log("url", url);
   fetch(url, {
     method: 'GET',
     // credentials: 'include',
@@ -141,6 +131,7 @@ function fetchProgress(filteredData, userDetails) {
     .then(data => dataProcessUserID(data, filteredData, userDetails), console.log("fetch progress worked"));
 };
 
+<<<<<<< HEAD
 function startObjectsIntro(inputLesson) {
   let intro = introJs();
   intro.setOptions(inputLesson);
@@ -151,6 +142,24 @@ function startObjectsIntro(inputLesson) {
       } 
   });
 }
+=======
+// Function to save most updated lesson step into databse
+function saveProgress(filteredData, userDetails) {
+  console.log("Saving progress");
+  const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`);
+  console.group("url", url);
+  fetch(url, {
+    method: 'PATCH',
+    headers: {'Accept': 'application/json' }
+  }
+  )
+    .then(response => response.json())
+    .then(data => dataProcessUserID(data, filteredData, userDetails),
+    console.log("Saved progress worked")
+  );
+};
+
+>>>>>>> fa0651eadb1c74f914c3e5f39ec7990855ccc2ca
 
 function dataProcessUserID(progress, filteredData, userDetails) {
   console.log("userid:", userDetails);
@@ -159,17 +168,49 @@ function dataProcessUserID(progress, filteredData, userDetails) {
   const currentStep = progress.find(element => element.user_id == userDetails.userid);
   const finalData = filteredData.filter(element => element.sequence >= currentStep.current_step);
   console.log("finalData:", finalData)
+<<<<<<< HEAD
   const lessonSteps = {
     steps: []
   };
   finalData.forEach(step => {
     lessonSteps.steps.push({
+=======
+  appendPopUpToDOM(finalData)
+};
+
+// Function to call intro.js but also callback to save lesson progress back to lessons_progresses
+function startObjectsIntro(inputLessons) {
+  let intro = introJs();
+  let lastStep = 0;
+  intro.setOptions(inputLessons);
+  intro.start().onchange(function () {
+    lastStep = intro._currentStep;
+    // alert("This is step" + lastStep);
+    console.log(lastStep);
+  });
+}
+
+// Function to create lesson steps from database and then run intro.js
+function appendPopUpToDOM(finalData) {
+  const lessonOptions = {
+    steps: []
+  };
+  finalData.forEach(step => {
+    lessonOptions.steps.push({
+>>>>>>> fa0651eadb1c74f914c3e5f39ec7990855ccc2ca
       element: document.querySelector(step.DOM_Id),
       title: step.title,
       intro: step.pop_up_text
     })
+    console.log("completed step creation for:", step.title)
   })
+<<<<<<< HEAD
   console.log(lessonSteps);
   startObjectsIntro(lessonSteps);
 };
 
+=======
+  console.log(lessonOptions);
+  startObjectsIntro(lessonOptions);
+}
+>>>>>>> fa0651eadb1c74f914c3e5f39ec7990855ccc2ca

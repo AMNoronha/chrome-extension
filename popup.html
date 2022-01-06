@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <!-- <link rel="stylesheet" href="assets/css/popup.css"> -->
+  <link rel="stylesheet" href="style/popup.css">
   <script src="../scripts/popup.js"></script>
 </head>
 
@@ -18,12 +18,17 @@
         <input type="submit" class="button primary" id="user-button">
       </form>
       <form class="form">
-        <input type="submit" class="button primary" id="clear-button" value="Clear">
+        <label for="text">LESSON ID</label>
+        <select name="lesson" id="lessonid" placeholder="1">
+          <option value="1">Create a new Github Repo</option>
+          <option value="2">Create a branch on Github</option>
+          <option value="3">Opening a pull request on Github</option>
+          <option value="4">Resolving Merge Conflicts on Github</option>
+        </select>
+        <input type="submit" class="button primary" id="lesson-button">
       </form>
       <form class="form">
-        <label for="text">LESSON ID</label>
-        <input name="text" id="lessonid" placeholder="1">
-        <input type="submit" class="button primary" id="lesson-button">
+        <input type="submit" class="button primary" id="clear-button" value="Clear">
       </form>
       <!-- <div class=buttons>
         <button class="button primary" id="submit-button">
