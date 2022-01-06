@@ -131,6 +131,18 @@ function fetchProgress(filteredData, userDetails) {
     .then(data => dataProcessUserID(data, filteredData, userDetails), console.log("fetch progress worked"));
 };
 
+<<<<<<< HEAD
+function startObjectsIntro(inputLesson) {
+  let intro = introJs();
+  intro.setOptions(inputLesson);
+  intro.start().onbeforechange(function () {
+
+      if (intro._currentSinputep == "2") {
+          alert("This is step 2")
+      } 
+  });
+}
+=======
 // Function to save most updated lesson step into databse
 function saveProgress(filteredData, userDetails) {
   console.log("Saving progress");
@@ -147,6 +159,7 @@ function saveProgress(filteredData, userDetails) {
   );
 };
 
+>>>>>>> fa0651eadb1c74f914c3e5f39ec7990855ccc2ca
 
 function dataProcessUserID(progress, filteredData, userDetails) {
   console.log("userid:", userDetails);
@@ -155,6 +168,13 @@ function dataProcessUserID(progress, filteredData, userDetails) {
   const currentStep = progress.find(element => element.user_id == userDetails.userid);
   const finalData = filteredData.filter(element => element.sequence >= currentStep.current_step);
   console.log("finalData:", finalData)
+<<<<<<< HEAD
+  const lessonSteps = {
+    steps: []
+  };
+  finalData.forEach(step => {
+    lessonSteps.steps.push({
+=======
   appendPopUpToDOM(finalData)
 };
 
@@ -177,12 +197,20 @@ function appendPopUpToDOM(finalData) {
   };
   finalData.forEach(step => {
     lessonOptions.steps.push({
+>>>>>>> fa0651eadb1c74f914c3e5f39ec7990855ccc2ca
       element: document.querySelector(step.DOM_Id),
       title: step.title,
       intro: step.pop_up_text
     })
     console.log("completed step creation for:", step.title)
   })
+<<<<<<< HEAD
+  console.log(lessonSteps);
+  startObjectsIntro(lessonSteps);
+};
+
+=======
   console.log(lessonOptions);
   startObjectsIntro(lessonOptions);
 }
+>>>>>>> fa0651eadb1c74f914c3e5f39ec7990855ccc2ca
