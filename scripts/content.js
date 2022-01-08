@@ -109,18 +109,19 @@ function callRails(userDetails) {
 };
 
 function dataProcessURL(data, userDetails) {
-  console.log("in data process function", data)
+  console.log("in data process function");
   console.log(data);
   console.log(location.href);
   // need to use regex
-  const filteredData = data.filter(element => location.href.includes(element.url));
+  const filteredData = data.filter(element => location.href.match(new RegExp(element.url)));
+  // const filteredData = data.filter(element => location.href === element.url);
   fetchProgress(filteredData, userDetails);
 };
 
 function fetchProgress(filteredData, userDetails) {
   console.log("Fetching progress")
   const url = new URL(`http://localhost:3000/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
-  // const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  // const url = new URL(`https://www.univerlay.me/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
   console.log("url", url);
   fetch(url, {
     method: 'GET',
