@@ -24,7 +24,8 @@
         "scripts/content.js"
       ],
       "css": [
-        "style/introjs.css"
+        "style/introjs.css",
+	"style/introjs-modern.css"
       ]
     }
   ],
