@@ -118,8 +118,8 @@ function dataProcessURL(data, userDetails) {
 
 function fetchProgress(filteredData, userDetails) {
   console.log("Fetching progress")
-  const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
-  // const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  const url = new URL(`http://localhost:3000/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  // const url = new URL(`https://www.univerlay.me/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
   console.log("url", url);
   fetch(url, {
     method: 'GET',
