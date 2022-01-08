@@ -143,22 +143,22 @@ function dataProcessUserID(progress, filteredData, userDetails) {
   const currentStep = progress.find(element => element.user_id == userDetails.userid);
   const finalData = filteredData.filter(element => element.sequence >= currentStep.current_step);
   console.log("finalData:", finalData);
-  appendPopUpToDOM(finalData, userDetails);
+  appendPopUpToDOM(finalData, userDetails, currentStep.id);
 };
 
 // Function to save most updated lesson step into databse
-function saveProgress(lastStep, userDetails) {
-  // console.log("Saving progress");
-  // // const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses/${userDetails}`);
+function saveProgress(lastStep, userDetails, progressID) {
+  console.log("Saving progress");
+  const url = new URL(`http://localhost:3000/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses/${progressID}`);
   // const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`);
-  // console.group("url", url);
-  // fetch(url, {
-  //   method: 'PATCH',
-  //   headers: { 'Accept': 'application/json' }
-  // }
-  // )
-  // .then(response => response.json())
-  // .then(data => dataProcessUserID(data, filteredData, userDetails),
+  console.group("url", url);
+  fetch(url, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json',
+    'Accept': 'application/json' },
+    body: JSON.stringify({ current_step: lastStep })
+    }
+  );
   console.log(lastStep);
   console.log(userDetails);
   console.log("Save progress worked");
@@ -166,7 +166,7 @@ function saveProgress(lastStep, userDetails) {
 
 
 // Function to call intro.js but also callback to save lesson progress back to lessons_progresses
-function startObjectsIntro(inputLessons, userDetails) {
+function startObjectsIntro(inputLessons, userDetails, progressID) {
   let intro = introJs();
   let lastStep = 0;
   intro.setOptions(inputLessons);
@@ -175,16 +175,19 @@ function startObjectsIntro(inputLessons, userDetails) {
     // alert("This is step" + lastStep);
     console.log(lastStep);
     console.log(userDetails);
+    console.log("Pgoress ID")
+    console.log(progressID);
     console.log("Done with startObjectsIntro");
-    // saveProgress(lastStep, userDetails);
+    saveProgress(lastStep, userDetails, progressID);
   });
 }
 
 // Function to create lesson steps from database and then run intro.js
-function appendPopUpToDOM(finalData, userDetails) {
+function appendPopUpToDOM(finalData, userDetails, progressID) {
   const lessonOptions = {
     steps: [],
-    showStepNumber: true,
+    showStepNumbers: true,
+    showBullets: false,
     showProgress: true
   };
   finalData.forEach(step => {
@@ -196,5 +199,5 @@ function appendPopUpToDOM(finalData, userDetails) {
     console.log("completed step creation for:", step.title)
   })
   console.log(lessonOptions);
-  startObjectsIntro(lessonOptions, userDetails);
+  startObjectsIntro(lessonOptions, userDetails, progressID);
 }
