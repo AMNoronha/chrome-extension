@@ -6,6 +6,7 @@ console.log("Chrome Extension Univerlay Connected");
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
     if (request.message === "clear") {
+      console.log("hello from clear")
       localStorage.clear();
       location.reload();
     };
@@ -38,13 +39,15 @@ if (localStorage.getItem('userid')) {
   yesLocalUser();
 } else {
   console.log("no local storage userid")
-  noLocalUser()
+  noLocalUser();
 }
 
 function yesLocalUser() {
   console.log("in the yesLocalUser function")
   let userDetails = {
-    "userid": localStorage.getItem('userid')
+    "userid": localStorage.getItem('userid'),
+    "token": localStorage.getItem('token'),
+    "email": localStorage.getItem('email')
   };
   start(userDetails)
 }
@@ -54,14 +57,51 @@ function noLocalUser() {
     function (request, sender, sendResponse) {
       if (request.message === "start") {
         let userDetails = {
-          "userid": request.userid
+          "email": request.email,
+          "password": request.password
       };
         console.log("Submit button worked, start function initiated");
-        localStorage.setItem('userid', userDetails.userid);
-        start(userDetails);
+        fetchAuthToken(userDetails)
+        // start(userDetails); commented out to be added after of fetchAuthToken
       };
     }
   );
+}
+
+function fetchAuthToken(userDetails) {
+  const emailFinal = userDetails.email.replace(/'/g, '"');
+  const passwordFinal = userDetails.password.replace(/'/g, '"');
+  console.log(emailFinal)
+  console.log(passwordFinal)
+  const jsonDetails = JSON.stringify({ "user": { "email": emailFinal, "password": passwordFinal } })
+
+  const url = new URL(`http://localhost:3000/users/sign_in`)
+  // const url = new URL(`https://www.univerlay.me/users/sign_in`)
+  console.log("url", url);
+  fetch(url, {
+    method: 'POST',
+    // credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: jsonDetails,
+    // ,mode: "no-cors"
+  })
+    .then(response => response.json())
+    .then(data => authTokenConverter(data));
+}
+
+function authTokenConverter(data) {
+  let userDetails = {
+    "userid": data.id,
+    "token": data.auth_token,
+    "email": data.email
+  };
+  localStorage.setItem('userid', data.id);
+  localStorage.setItem('token', data.auth_token);
+  localStorage.setItem('email', data.email);
+  start(userDetails);
 }
 
 function start(userDetails) {
@@ -115,18 +155,23 @@ function dataProcessURL(data, userDetails) {
   // need to use regex
   const filteredData = data.filter(element => location.href.match(new RegExp(element.url)));
   // const filteredData = data.filter(element => location.href === element.url);
+  console.log("data has been filtered to:", filteredData)
   fetchProgress(filteredData, userDetails);
 };
 
 function fetchProgress(filteredData, userDetails) {
   console.log("Fetching progress")
-  const url = new URL(`http://localhost:3000/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
-  // const url = new URL(`https://www.univerlay.me/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  // const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
   console.log("url", url);
   fetch(url, {
     method: 'GET',
     // credentials: 'include',
-    headers: { 'Accept': 'application/json' }
+    headers: {
+      'Accept': 'application/json',
+      'X-User-Token': userDetails.token,
+      'X-User-Email': userDetails.email
+    }
     // ,mode: "no-cors"
   }
   )
