@@ -1,3 +1,5 @@
+console.log("i am in popupjs")
+
 function popup() {
   chrome.tabs.query({
     currentWindow: true,
@@ -6,7 +8,8 @@ function popup() {
     var activeTab = tabs[0];
     chrome.tabs.sendMessage(activeTab.id, {
       "message": "start",
-      "userid": document.getElementById("userid").value
+      "email": document.getElementById("email").value,
+      "password": document.getElementById("password").value
     });
   });
 }
