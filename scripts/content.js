@@ -225,8 +225,8 @@ function startObjectsIntro(inputLessons, userDetails, progressID) {
     console.log("Done with startObjectsIntro");
     saveProgress(lastStep, userDetails, progressID);
   }).oncomplete(function () {
-      // alert("I am done!");
-      NewTab(userDetails.userid);
+      alert("I am done!");
+      // NewTab(userDetails.userid);
   });
 }
 
