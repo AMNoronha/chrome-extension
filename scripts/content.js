@@ -179,7 +179,17 @@ function startObjectsIntro(inputLessons, userDetails, progressID) {
     console.log(progressID);
     console.log("Done with startObjectsIntro");
     saveProgress(lastStep, userDetails, progressID);
+  }).oncomplete(function () {
+      // alert("I am done!");
+      NewTab(userDetails.userid);
   });
+}
+
+// Function opens new window
+function NewTab(user) {
+  alert("NewTab");
+  window.open(
+    `http://localhost:3000/lessons/${user}/lesson_progresses`, '_blank');
 }
 
 // Function to create lesson steps from database and then run intro.js
