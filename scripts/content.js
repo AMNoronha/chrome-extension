@@ -190,7 +190,9 @@ function dataProcessUserID(progress, filteredData, userDetails) {
   console.log("userid:", userDetails);
   console.log("progress:", progress);
   console.log("filteredData:", filteredData);
-  const currentStep = progress.find(element => element.user_id == userDetails.userid);
+  const currentStep = progress.find(element => element.lesson_id == localStorage.getItem('lessonid'));
+  console.log("currentStep:", currentStep );
+  console.log(currentStep.current_step);
   const finalData = filteredData.filter(element => element.sequence >= currentStep.current_step);
   console.log("finalData:", finalData);
   appendPopUpToDOM(finalData, userDetails, currentStep.id);
@@ -242,16 +244,16 @@ function startObjectsIntro(inputLessons, userDetails, progressID) {
   }).oncomplete(function () {
     if (window.location.href === 'https://github.com/new'){
       // alert(window.location.href);
-      NewTab(userDetails.userid);
+      NewTab();
   }
   });
 }
 
 // Function opens new window
-function NewTab(user) {
+function NewTab() {
   // alert("NewTab");
   window.open(
-    `http://localhost:3000/lessons/${user}/lesson_progresses`, '_blank');
+    `http://localhost:3000/lessons/${localStorage.getItem('lessonid')}/lesson_progresses`, '_blank');
 }
 
 // Function to create lesson steps from database and then run intro.js
