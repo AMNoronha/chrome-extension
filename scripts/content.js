@@ -1,8 +1,9 @@
-// import introJs from "scripts/intro.min.js";
-// import { lessonOptions } from 'scripts/lesson.js';
+// import introJs from "scripts/intro.min.js"; DEL IN CLEANUP
+// import { lessonOptions } from 'scripts/lesson.js'; DEL IN CLEANUP
 
-console.log("Chrome Extension Univerlay Connected");
+console.log("Chrome Extension Univerlay Connected"); // FOR INFO
 
+// Function to clear and reload page
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
     if (request.message === "clear") {
@@ -13,6 +14,7 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
+// Function to set lesson id
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
     if (request.message === "lessonchange") {
@@ -25,15 +27,15 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
+// Function injects intro.js() into page
 let s = document.createElement('script');
-// console.log(s);
 s.src = chrome.runtime.getURL('scripts/intro.min.js');
-// console.log(s.src);
 s.onload = function(){
   this.remove();
 };
 (document.head || document.documentElement).appendChild(s);
 
+// Function
 if (localStorage.getItem('userid')) {
   console.log("yes local storage userid")
   yesLocalUser();
@@ -42,6 +44,7 @@ if (localStorage.getItem('userid')) {
   noLocalUser();
 }
 
+// Function
 function yesLocalUser() {
   console.log("in the yesLocalUser function")
   let userDetails = {
@@ -52,6 +55,7 @@ function yesLocalUser() {
   start(userDetails)
 }
 
+// Function
 function noLocalUser() {
   chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
@@ -68,6 +72,7 @@ function noLocalUser() {
   );
 }
 
+// Function to get authentication token
 function fetchAuthToken(userDetails) {
   const emailFinal = userDetails.email.replace(/'/g, '"');
   const passwordFinal = userDetails.password.replace(/'/g, '"');
@@ -209,14 +214,24 @@ function saveProgress(lastStep, userDetails, progressID) {
   console.log("Save progress worked");
 };
 
+//Function to determine lastStep (prgoress)
+function calclastStep(currentStep) {
+  if (window.location.href === 'https://github.com') {
+    lastStep = currentStep;
+  } else {
+    lastStep = currentStep + 3;
+  console.log(`THIS IS THE LAST STEP: ${lastStep}`);
+  return lastStep;
+  }
+}
+
 
 // Function to call intro.js but also callback to save lesson progress back to lessons_progresses
 function startObjectsIntro(inputLessons, userDetails, progressID) {
   let intro = introJs();
-  let lastStep = 0;
   intro.setOptions(inputLessons);
   intro.start().onchange(function () {
-    lastStep = intro._currentStep;
+    let lastStep = calclastStep(intro._currentStep);
     // alert("This is step" + lastStep);
     console.log(lastStep);
     console.log(userDetails);
@@ -226,14 +241,15 @@ function startObjectsIntro(inputLessons, userDetails, progressID) {
     saveProgress(lastStep, userDetails, progressID);
   }).oncomplete(function () {
     if (window.location.href === 'https://github.com/new'){
-      alert(window.location.href);
-  }// NewTab(userDetails.userid);
+      // alert(window.location.href);
+      NewTab(userDetails.userid);
+  }
   });
 }
 
 // Function opens new window
 function NewTab(user) {
-  alert("NewTab");
+  // alert("NewTab");
   window.open(
     `http://localhost:3000/lessons/${user}/lesson_progresses`, '_blank');
 }
