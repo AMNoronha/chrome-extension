@@ -225,8 +225,9 @@ function startObjectsIntro(inputLessons, userDetails, progressID) {
     console.log("Done with startObjectsIntro");
     saveProgress(lastStep, userDetails, progressID);
   }).oncomplete(function () {
-      alert("I am done!");
-      // NewTab(userDetails.userid);
+    if (window.location.href === 'https://github.com/new'){
+      alert(window.location.href);
+  }// NewTab(userDetails.userid);
   });
 }
 
