@@ -13,24 +13,36 @@
     </div>
     <div id="containers">
       <form class="form">
-        <label for="text">EMAIL</label>
-        <input name="text" id="email" placeholder="email">
-        <label for="text">PASSWORD</label>
-        <input type="password" name="text" id="password" placeholder="*******">
-        <input type="submit" class="button primary" id="user-button">
+        <div class="form-input">
+          <label for="text">EMAIL:</label>
+          <input name="text" id="email" required placeholder="email">
+        </div>
+        <div class="form-input">
+          <label for="text">PASSWORD:</label>
+          <input type="password" name="text" id="password" required placeholder="*******">
+        </div>
+        <div class="form-input">
+          <input type="submit" class="button-primary" id="user-button">
+        </div>
       </form>
       <form class="form">
-        <label for="text">LESSON ID</label>
-        <select name="lesson" id="lessonid" placeholder="1">
-          <option value="1">Create a new Github Repo</option>
-          <option value="2">Create a branch on Github</option>
-          <option value="3">Opening a pull request on Github</option>
-          <option value="4">Resolving Merge Conflicts on Github</option>
-        </select>
-        <input type="submit" class="button primary" id="lesson-button">
+        <div class="form-input">
+          <label for="text" id="label-lesson">LESSON</label>
+          <select name="lesson" id="lessonid" placeholder="1">
+            <option value="1">Create a new Github Repo</option>
+            <option value="2">Create a branch on Github</option>
+            <option value="3">Opening a pull request on Github</option>
+            <option value="4">Resolving Merge Conflicts on Github</option>
+          </select>
+        </div>
+        <div class="form-input">
+          <input type="submit" class="button-primary" id="lesson-button">
+        </div>
       </form>
       <form class="form">
-        <input type="submit" class="button primary" id="clear-button" value="Clear">
+        <div class="form-input">
+          <input type="submit" class="button-primary" id="clear-button" value="Clear">
+        </div>
       </form>
       <!-- <div class=buttons>
         <button class="button primary" id="submit-button">
