@@ -221,7 +221,7 @@ function calclastStep(currentStep) {
   if (window.location.href === 'https://github.com') {
     lastStep = currentStep;
   } else {
-    lastStep = currentStep + 3;
+    lastStep = currentStep + 2;
   console.log(`THIS IS THE LAST STEP: ${lastStep}`);
   return lastStep;
   }
@@ -233,9 +233,9 @@ function startObjectsIntro(inputLessons, userDetails, progressID) {
   let intro = introJs();
   intro.setOptions(inputLessons);
   intro.start().onchange(function () {
-    let lastStep = calclastStep(intro._currentStep);
+    lastStep = calclastStep(intro._currentStep);
     // alert("This is step" + lastStep);
-    console.log(lastStep);
+    console.log("CALLLED FUNCTION LASTSTEP");
     console.log(userDetails);
     console.log("Pgoress ID")
     console.log(progressID);
@@ -244,6 +244,7 @@ function startObjectsIntro(inputLessons, userDetails, progressID) {
   }).oncomplete(function () {
     if (window.location.href === 'https://github.com/new'){
       // alert(window.location.href);
+      saveProgress("11", userDetails, progressID);
       NewTab();
   }
   });
