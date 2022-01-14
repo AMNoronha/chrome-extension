@@ -56,13 +56,16 @@ button span {
 
 #email {
   width: 100%;
+  margin-top: 3px;
 }
 
 #password {
   width: 100%;
+  margin-top: 3px;
 }
 
 #lessonid {
   width: 100%;
+  margin-top: 3px;
   font-family: "Quicksand", "Manrope", "sans-serif";
 }
