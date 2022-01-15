@@ -83,8 +83,8 @@ function fetchAuthToken(userDetails) {
   console.log(passwordFinal)
   const jsonDetails = JSON.stringify({ "user": { "email": emailFinal, "password": passwordFinal } })
 
-  const url = new URL(`http://localhost:3000/users/sign_in`)
-  // const url = new URL(`https://www.univerlay.me/users/sign_in`)
+  // const url = new URL(`http://localhost:3000/users/sign_in`)
+  const url = new URL(`https://www.univerlay.me/users/sign_in`)
   console.log("url", url);
   fetch(url, {
     method: 'POST',
@@ -144,8 +144,8 @@ function callRails(userDetails) {
   console.log("Call Rails Started, Fetching Data Now")
   console.log("localstorage lessonid:", localStorage.getItem('lessonid'))
   if (localStorage.getItem('lessonid') !== null) {
-    const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
-    // const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
+    // const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
+    const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_steps`)
     console.log("url", url)
     fetch(url, {
       method: 'GET',
@@ -174,8 +174,8 @@ function dataProcessURL(data, userDetails) {
 
 function fetchProgress(filteredData, userDetails) {
   console.log("Fetching progress")
-  const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
-  // const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  // const url = new URL(`http://localhost:3000/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
+  const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`)
   console.log("url", url);
   fetch(url, {
     method: 'GET',
@@ -198,7 +198,9 @@ function dataProcessUserID(progress, filteredData, userDetails) {
   console.log("userid:", userDetails);
   console.log("progress:", progress);
   console.log("filteredData:", filteredData);
-  const currentStep = progress.find(element => element.user_id == userDetails.userid);
+  const currentStep = progress.find(element => element.lesson_id == localStorage.getItem('lessonid'));
+  console.log("currentStep:", currentStep );
+  console.log(currentStep.current_step);
   const finalData = filteredData.filter(element => element.sequence >= currentStep.current_step);
   console.log("finalData:", finalData);
   appendPopUpToDOM(finalData, userDetails, currentStep.id);
@@ -207,8 +209,8 @@ function dataProcessUserID(progress, filteredData, userDetails) {
 // Function to save most updated lesson step into databse
 function saveProgress(lastStep, userDetails, progressID) {
   console.log("Saving progress");
-  const url = new URL(`http://localhost:3000/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses/${progressID}`);
-  // const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`);
+  // const url = new URL(`http://localhost:3000/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses/${progressID}`);
+  const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`);
   console.group("url", url);
   fetch(url, {
     method: 'PATCH',
@@ -227,7 +229,7 @@ function calclastStep(currentStep) {
   if (window.location.href === 'https://github.com') {
     lastStep = currentStep;
   } else {
-    lastStep = currentStep + 3;
+    lastStep = currentStep + 2;
   console.log(`THIS IS THE LAST STEP: ${lastStep}`);
   return lastStep;
   }
@@ -239,27 +241,33 @@ function startObjectsIntro(inputLessons, userDetails, progressID) {
   let intro = introJs();
   intro.setOptions(inputLessons);
   intro.start().onchange(function () {
-    let lastStep = calclastStep(intro._currentStep);
+    lastStep = calclastStep(intro._currentStep);
     // alert("This is step" + lastStep);
-    console.log(lastStep);
+    console.log("CALLLED FUNCTION LASTSTEP");
     console.log(userDetails);
     console.log("Pgoress ID")
     console.log(progressID);
     console.log("Done with startObjectsIntro");
     saveProgress(lastStep, userDetails, progressID);
   }).oncomplete(function () {
-    if (window.location.href === 'https://github.com/new'){
+    if (window.location.href === 'https://github.com/new') {
       // alert(window.location.href);
-      NewTab(userDetails.userid);
-  }
+      saveProgress("11", userDetails, progressID);
+      NewTab();
+  } else if (window.location.href === 'https://github.com/new/import') {
+      saveProgress( "7", userDetails, progressID);
+      NewTab();
+   }
+      console.log("Done with callback funtion");
   });
 }
 
 // Function opens new window
-function NewTab(user) {
+function NewTab() {
   // alert("NewTab");
   window.open(
-    `http://localhost:3000/lessons/${user}/lesson_progresses`, '_blank');
+    // `http://localhost:3000/lessons/${localStorage.getItem('lessonid')}/lesson_progresses`, '_blank');
+    `https://www.univerlay-me/lessons/${localStorage.getItem('lessonid')}/lesson_progresses`, '_blank');
 }
 
 // Function to create lesson steps from database and then run intro.js
