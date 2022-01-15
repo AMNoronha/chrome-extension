@@ -10,6 +10,9 @@ chrome.runtime.onMessage.addListener(
       console.log("hello from clear")
       localStorage.clear();
       location.reload();
+      chrome.runtime.sendMessage({
+        cmd: "clear"
+      });
     };
   }
 );
@@ -112,6 +115,11 @@ function authTokenConverter(data) {
 function start(userDetails) {
   console.log("Start function working, submitted user details:")
   console.log(userDetails);
+  chrome.runtime.sendMessage({
+    cmd: "runLogic",
+    email: userDetails.email,
+    token: userDetails.token
+  });
   callRails(userDetails);
 };
 
