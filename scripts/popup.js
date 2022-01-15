@@ -67,8 +67,8 @@ function fetchLesson() {
     console.log("email in values:", values[0]["email"])
     console.log("token in values:", values[1]["token"])
     console.log(userDetails)
-    const url = new URL(`http://localhost:3000/api/lessons`)
-    // const url = new URL(`https://www.univerlay.me/api/lessons`)
+    // const url = new URL(`http://localhost:3000/api/lessons`)
+    const url = new URL(`https://www.univerlay.me/api/lessons`)
     fetch(url, {
       method: 'GET',
       // credentials: 'include',
