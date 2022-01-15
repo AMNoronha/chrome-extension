@@ -259,7 +259,7 @@ function NewTab() {
   // alert("NewTab");
   window.open(
     // `http://localhost:3000/lessons/${localStorage.getItem('lessonid')}/lesson_progresses`, '_blank');
-    `https://www.univerlay-me/lessons/${localStorage.getItem('lessonid')}/lesson_progresses`, '_blank');
+    `https://www.univerlay.me/lessons/${localStorage.getItem('lessonid')}/lesson_progresses`, '_blank');
 }
 
 // Function to create lesson steps from database and then run intro.js
