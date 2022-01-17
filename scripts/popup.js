@@ -100,7 +100,7 @@ function addLessons(data) {
   console.log(data)
   for (i = 0; i < data.length; i++) {
     var option = document.createElement("option");
-    option.value = `${i+1}`;
+    option.value = `${data[i].id}`;
     option.text = `${data[i].title}`
     console.log(option)
     select.appendChild(option);
