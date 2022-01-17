@@ -210,7 +210,7 @@ function dataProcessUserID(progress, filteredData, userDetails) {
 function saveProgress(lastStep, userDetails, progressID) {
   console.log("Saving progress");
   // const url = new URL(`http://localhost:3000/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses/${progressID}`);
-  const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses/${progressID}`);
+  const url = new URL(`https://www.univerlay.me/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses/${progressID}`);
   console.group("url", url);
   fetch(url, {
     method: 'PATCH',
@@ -250,12 +250,15 @@ function startObjectsIntro(inputLessons, userDetails, progressID) {
     console.log("Done with startObjectsIntro");
     saveProgress(lastStep, userDetails, progressID);
   }).oncomplete(function () {
-    if (window.location.href === 'https://github.com/new') {
+    if (/^https:\/\/github.com\/new$/.test(window.location.href)) {
       // alert(window.location.href);
       saveProgress("11", userDetails, progressID);
       NewTab();
-  } else if (window.location.href === 'https://github.com/new/import') {
+    } else if (/^https:\/\/github.com\/new\/import$/.test(window.location.href)) {
       saveProgress( "7", userDetails, progressID);
+      NewTab();
+    } else if (/^https:\/\/github.com\/.+\/Spoon-Knife$/.test(window.location.href)) {
+      saveProgress("9", userDetails, progressID);
       NewTab();
    }
       console.log("Done with callback funtion");
