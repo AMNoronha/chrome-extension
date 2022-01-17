@@ -10,6 +10,9 @@ chrome.runtime.onMessage.addListener(
       console.log("hello from clear")
       localStorage.clear();
       location.reload();
+      chrome.runtime.sendMessage({
+        cmd: "clear"
+      });
     };
   }
 );
@@ -112,6 +115,11 @@ function authTokenConverter(data) {
 function start(userDetails) {
   console.log("Start function working, submitted user details:")
   console.log(userDetails);
+  chrome.runtime.sendMessage({
+    cmd: "runLogic",
+    email: userDetails.email,
+    token: userDetails.token
+  });
   callRails(userDetails);
 };
 
@@ -202,7 +210,7 @@ function dataProcessUserID(progress, filteredData, userDetails) {
 function saveProgress(lastStep, userDetails, progressID) {
   console.log("Saving progress");
   // const url = new URL(`http://localhost:3000/api/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses/${progressID}`);
-  const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses`);
+  const url = new URL(`https://www.univerlay.me/lessons/${localStorage.getItem(`lessonid`)}/lesson_progresses/${progressID}`);
   console.group("url", url);
   fetch(url, {
     method: 'PATCH',
@@ -262,7 +270,7 @@ function NewTab() {
   // alert("NewTab");
   window.open(
     // `http://localhost:3000/lessons/${localStorage.getItem('lessonid')}/lesson_progresses`, '_blank');
-    `https://www.univerlay-me/lessons/${localStorage.getItem('lessonid')}/lesson_progresses`, '_blank');
+    `https://www.univerlay.me/lessons/${localStorage.getItem('lessonid')}/lesson_progresses`, '_blank');
 }
 
 // Function to create lesson steps from database and then run intro.js
